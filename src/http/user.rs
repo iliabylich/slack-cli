@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use crate::http::{Response as HttpResponse};
+use crate::http::{Response as HttpResponse, Error};
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct User {
@@ -9,7 +9,7 @@ pub struct User {
 }
 
 pub mod meta {
-    use super::{User, HttpResponse};
+    use super::*;
     use serde::{Deserialize, Serialize};
 
     pub mod list {
@@ -24,18 +24,16 @@ pub mod meta {
         }
 
         impl HttpResponse<Vec<User>> for Response {
-            fn to_result(&self) -> Result<Vec<User>, String> {
-                println!("{:#?}", self);
+            fn to_result(&self) -> Result<Vec<User>, Error> {
                 if self.ok {
                     if let Some(users) = &self.members {
                         return Ok(users.clone());
                     }
-                } else {
-                    if let Some(err) = &self.error {
-                        return Err(err.clone())
-                    }
                 }
-                Err(String::from("Broken response format"))
+                if let Some(err) = &self.error {
+                    return Err(Error::from(err))
+                }
+                Err(Error::from("Broken response format"))
             }
         }
     }

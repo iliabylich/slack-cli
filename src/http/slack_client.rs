@@ -1,6 +1,6 @@
 use std::env;
 
-use crate::http::{JsonClient, Response, Channel, User};
+use crate::http::{JsonClient, Response, Channel, User, Error};
 
 pub struct SlackClient {
     json_client: JsonClient
@@ -9,24 +9,25 @@ pub struct SlackClient {
 const API_PREFIX: &str = "https://slack.com/api";
 
 impl SlackClient {
-    pub fn new(token: String) -> Result<Self, String> {
+    pub fn new(token: String) -> Result<Self, Error> {
         let json_client = JsonClient::new(token, String::from(API_PREFIX))?;
         Ok(Self { json_client })
     }
 
-    pub fn new_from_env() -> Result<Self, String> {
-        match env::var("SLACK_TOKEN") {
-            Ok(value) => Self::new(value),
-            Err(err) => Err(err.to_string())
-        }
+    pub fn new_from_env() -> Result<Self, Error> {
+        let token = env::var("SLACK_TOKEN").map_err(|_err|
+            Error::from("No SLACK_TOKEN env variable")
+        )?;
+
+        Self::new(token)
     }
 
-    pub fn list_channels(&self) -> Result<Vec<Channel>, String> {
+    pub fn list_channels(&self) -> Result<Vec<Channel>, Error> {
         use crate::http::channel_meta::list::{Response as ListChannelsResponse, METHOD as LIST_CHANNELS};
         self.json_client.get_json::<ListChannelsResponse>(LIST_CHANNELS)?.to_result()
     }
 
-    pub fn list_users(&self) -> Result<Vec<User>, String> {
+    pub fn list_users(&self) -> Result<Vec<User>, Error> {
         use crate::http::user_meta::list::{Response as ListUsersResponse, METHOD as LIST_USERS};
         self.json_client.get_json::<ListUsersResponse>(LIST_USERS)?.to_result()
     }

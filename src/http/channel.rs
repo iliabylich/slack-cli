@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use crate::http::{Response as HttpResponse};
+use crate::http::{Response as HttpResponse, Error};
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Channel {
@@ -23,17 +23,16 @@ pub mod meta {
         }
 
         impl HttpResponse<Vec<Channel>> for Response {
-            fn to_result(&self) -> Result<Vec<Channel>, String> {
+            fn to_result(&self) -> Result<Vec<Channel>, Error> {
                 if self.ok {
                     if let Some(channels) = &self.channels {
                         return Ok(channels.clone());
                     }
-                } else {
-                    if let Some(err) = &self.error {
-                        return Err(err.clone())
-                    }
                 }
-                Err(String::from("Broken response format"))
+                if let Some(err) = &self.error {
+                    return Err(Error::from(err))
+                }
+                Err(Error::from("Broken response format"))
             }
         }
     }

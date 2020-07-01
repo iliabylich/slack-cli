@@ -4,6 +4,9 @@ extern crate serde_json;
 mod response;
 pub use response::Response;
 
+mod error;
+pub use error::Error;
+
 mod json_client;
 pub use json_client::JsonClient;
 
