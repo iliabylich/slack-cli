@@ -53,7 +53,6 @@ pub mod test_helper {
     use crate::ui::{AtomicAction, Screen, Printer, PrintError};
     use crate::ui::printer_helper::InMemoryPrinter;
 
-
     pub struct InMemoryScreen {
         objects: Vec<Visual>,
         printer: InMemoryPrinter

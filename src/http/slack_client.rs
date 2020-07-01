@@ -3,7 +3,7 @@ use std::env;
 use crate::http::{JsonClient, Response, Channel, User, Error};
 
 pub struct SlackClient {
-    json_client: JsonClient
+    pub json_client: JsonClient
 }
 
 const API_PREFIX: &str = "https://slack.com/api";
@@ -20,6 +20,11 @@ impl SlackClient {
         )?;
 
         Self::new(token)
+    }
+
+    #[cfg(test)]
+    pub fn new_with_json_client(json_client: JsonClient) -> Self {
+        Self { json_client }
     }
 
     pub fn list_channels(&self) -> Result<Vec<Channel>, Error> {

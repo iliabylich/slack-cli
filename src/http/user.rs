@@ -1,11 +1,18 @@
 use serde::{Deserialize, Serialize};
 use crate::http::{Response as HttpResponse, Error};
 
-#[derive(Clone, Debug, Serialize, Deserialize)]
+#[derive(Eq, PartialEq, Clone, Debug, Serialize, Deserialize)]
 pub struct User {
     pub id: String,
     pub name: String,
     pub real_name: String
+}
+
+impl User {
+    #[cfg(test)]
+    pub fn new(id: &str, name: &str, real_name: &str) -> Self {
+        Self { id: id.to_owned(), name: name.to_owned(), real_name: real_name.to_owned() }
+    }
 }
 
 pub mod meta {
@@ -28,13 +35,56 @@ pub mod meta {
                 if self.ok {
                     if let Some(users) = &self.members {
                         return Ok(users.clone());
+                    } else {
+                        return Err(Error::from("'ok' is true, but 'members' is null"))
                     }
                 }
                 if let Some(err) = &self.error {
                     return Err(Error::from(err))
                 }
-                Err(Error::from("Broken response format"))
+                Err(Error::from("Broken response format (no 'error' field)"))
             }
         }
+    }
+}
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::http::http_helper::get_test_slack_client;
+
+    #[test]
+    fn it_lists_users() {
+        let request = "/users.list";
+        let response = r#"
+            {
+                "ok": true,
+                "members": [
+                    {
+                        "id": "1",
+                        "name": "me",
+                        "real_name": "Me"
+                    },
+                    {
+                        "id": "2",
+                        "name": "you",
+                        "real_name": "You"
+                    }
+                ]
+            }
+        "#;
+
+
+        let slack = get_test_slack_client(request, response);
+        let result = slack.list_users().unwrap();
+
+        assert_eq!(
+            result,
+            vec![
+                User::new("1", "me", "Me"),
+                User::new("2", "you", "You"),
+            ]
+        )
     }
 }

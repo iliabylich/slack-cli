@@ -7,6 +7,9 @@ pub use response::Response;
 mod error;
 pub use error::Error;
 
+mod http_client;
+pub use http_client::{HttpClient, DefaultHttpClient};
+
 mod json_client;
 pub use json_client::JsonClient;
 
@@ -18,3 +21,6 @@ pub use channel::{Channel, meta as channel_meta};
 
 mod user;
 pub use user::{User, meta as user_meta};
+
+#[cfg(test)]
+pub use http_client::test_helper as http_helper;
