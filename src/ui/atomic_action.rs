@@ -1,6 +1,4 @@
-// use std::{thread, time};
-
-use crate::ui::point::Point;
+use crate::primitives::Point;
 
 #[derive(Debug, Clone)]
 #[allow(dead_code)]

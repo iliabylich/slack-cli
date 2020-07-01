@@ -1,8 +1,8 @@
-use crate::ui::point::Point;
-use crate::ui::action::AtomicAction;
-use crate::ui::visual::VisualObject;
-use super::horizontal_line::HorizontalLine;
-use super::vertical_line::VerticalLine;
+use crate::primitives::Point;
+use crate::ui::AtomicAction;
+use crate::primitives::VisualObject;
+use crate::primitives::HorizontalLine;
+use crate::primitives::VerticalLine;
 
 
 #[derive(Debug, Clone)]
@@ -19,7 +19,7 @@ impl VisualObject for Rectangle {
         let top_right = Point { line: top_left.line, col: bottom_right.col };
         let bottom_left = Point { line: bottom_right.line, col: top_left.col };
 
-        let width = top_right.col - top_left.col - 1; // 1 for each corners
+        let width = top_right.col - top_left.col - 1;
         let height = bottom_left.line - top_left.line - 1;
 
         let mut top_line = HorizontalLine { left: top_left.right(1), length: width }.to_actions();
@@ -51,21 +51,18 @@ impl VisualObject for Rectangle {
 
         result
     }
-
-    fn clone_boxed(&self) -> Box<dyn VisualObject> {
-        Box::new((*self).clone())
-    }
 }
 
 #[cfg(test)]
 mod tests {
     use super::Rectangle;
+    use crate::{primitives::Point, ui::screen_helper::assert_prints};
 
     #[test]
     fn it_prints() {
-        assert_prints!(
-            [5, 5],
-            Rectangle { top_left: Point { line: 0, col: 0 }, bottom_right: Point { line: 2, col: 3 } },
+        assert_prints(
+            (5, 5),
+            Box::new(Rectangle { top_left: Point { line: 0, col: 0 }, bottom_right: Point { line: 2, col: 3 } }),
             vec![
                 '┏', '━', '━', '┓', ' ', '\n',
                 '┃', ' ', ' ', '┃', ' ', '\n',

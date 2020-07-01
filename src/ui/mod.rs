@@ -1,14 +1,13 @@
-mod point;
-mod action;
-mod visual;
-#[macro_use] mod screen;
-mod primitives;
+mod atomic_action;
+pub use atomic_action::AtomicAction;
 
-pub use point::Point;
-pub use action::AtomicAction;
-pub use visual::VisualObject;
+mod printer;
+pub use printer::{Printer, StdoutPrinter};
+
+mod screen;
 pub use screen::{Screen, TerminalScreen};
-pub use primitives::*;
 
 #[cfg(test)]
 pub use screen::test_helper as screen_helper;
+#[cfg(test)]
+pub use printer::test_helper as printer_helper;

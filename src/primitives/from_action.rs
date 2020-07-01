@@ -1,5 +1,5 @@
-use crate::ui::action::AtomicAction;
-use crate::ui::visual::VisualObject;
+use crate::ui::AtomicAction;
+use crate::primitives::VisualObject;
 
 #[derive(Debug, Clone)]
 pub struct FromAtomicAction {
@@ -17,23 +17,18 @@ impl VisualObject for FromAtomicAction {
     fn to_actions(&self) -> Vec<AtomicAction> {
         vec![self.action.clone()]
     }
-
-    fn clone_boxed(&self) -> Box<dyn VisualObject> {
-        Box::new((*self).clone())
-    }
 }
-
 
 #[cfg(test)]
 mod tests {
     use super::FromAtomicAction;
-    use crate::AtomicAction;
+    use crate::{ui::screen_helper::assert_prints, AtomicAction};
 
     #[test]
     fn it_prints() {
-        assert_prints!(
-            [5, 5],
-            FromAtomicAction { action: AtomicAction::Print { char: 'x' } },
+        assert_prints(
+            (5, 5),
+            Box::new(FromAtomicAction { action: AtomicAction::Print { char: 'x' } }),
             vec![
                 'x', ' ', ' ', ' ', ' ', '\n',
                 ' ', ' ', ' ', ' ', ' ', '\n',

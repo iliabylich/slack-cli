@@ -1,6 +1,6 @@
-use crate::ui::point::Point;
-use crate::ui::action::AtomicAction;
-use crate::ui::visual::VisualObject;
+use crate::primitives::Point;
+use crate::ui::AtomicAction;
+use crate::primitives::VisualObject;
 
 #[derive(Debug, Clone)]
 pub struct HorizontalLine {
@@ -20,22 +20,19 @@ impl VisualObject for HorizontalLine {
 
         result
     }
-
-    fn clone_boxed(&self) -> Box<dyn VisualObject> {
-        Box::new((*self).clone())
-    }
 }
 
 
 #[cfg(test)]
 mod tests {
     use super::HorizontalLine;
+    use crate::{primitives::Point, ui::screen_helper::assert_prints};
 
     #[test]
     fn it_prints() {
-        assert_prints!(
-            [5, 5],
-            HorizontalLine { left: Point { line: 2, col: 1 }, length: 3 },
+        assert_prints(
+            (5, 5),
+            Box::new(HorizontalLine { left: Point { line: 2, col: 1 }, length: 3 }),
             vec![
                 ' ', ' ', ' ', ' ', ' ', '\n',
                 ' ', ' ', ' ', ' ', ' ', '\n',

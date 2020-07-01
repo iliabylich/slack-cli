@@ -1,6 +1,6 @@
-use crate::ui::point::Point;
-use crate::ui::action::AtomicAction;
-use crate::ui::visual::VisualObject;
+use crate::primitives::Point;
+use crate::ui::AtomicAction;
+use crate::primitives::VisualObject;
 
 #[derive(Debug, Clone)]
 pub struct Label {
@@ -20,21 +20,18 @@ impl VisualObject for Label {
 
         result
     }
-
-    fn clone_boxed(&self) -> Box<dyn VisualObject> {
-        Box::new((*self).clone())
-    }
 }
 
 #[cfg(test)]
 mod tests {
     use super::Label;
+    use crate::{primitives::Point, ui::screen_helper::assert_prints};
 
     #[test]
     fn it_prints() {
-        assert_prints!(
-            [5, 5],
-            Label { text: String::from("abc"), at: Point { line: 2, col: 1 } },
+        assert_prints(
+            (5, 5),
+            Box::new(Label { text: String::from("abc"), at: Point { line: 2, col: 1 } }),
             vec![
                 ' ', ' ', ' ', ' ', ' ', '\n',
                 ' ', ' ', ' ', ' ', ' ', '\n',

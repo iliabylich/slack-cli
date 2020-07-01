@@ -1,6 +1,8 @@
 mod ui;
+mod primitives;
 
-use ui::{Point, Rectangle, Label, Screen, TerminalScreen, FromAtomicAction, AtomicAction};
+use primitives::{Point, Rectangle, Label, FromAtomicAction};
+use ui::{Screen, TerminalScreen, AtomicAction};
 
 fn main() {
     let mut screen = TerminalScreen::new();
