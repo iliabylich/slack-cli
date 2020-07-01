@@ -1,18 +1,18 @@
 
 use crate::primitives::VisualObject;
 use super::AtomicAction;
-use super::{Printer, StdoutPrinter};
+use super::{Printer, StdoutPrinter, PrintError};
 
 type Visual = Box<dyn VisualObject>;
 
 pub trait Screen {
-    fn draw(&mut self);
+    fn draw(&mut self) -> Result<(), PrintError>;
 
-    fn clear(&mut self);
+    fn clear(&mut self) -> Result<(), PrintError>;
 
-    fn redraw(&mut self) {
-        self.clear();
-        self.draw();
+    fn redraw(&mut self) -> Result<(), PrintError> {
+        self.clear()?;
+        self.draw()
     }
 }
 
@@ -32,15 +32,16 @@ impl TerminalScreen {
 }
 
 impl Screen for TerminalScreen {
-    fn draw(&mut self) {
+    fn draw(&mut self) -> Result<(), PrintError> {
         for object in self.objects.iter() {
             for action in object.to_actions() {
-                self.printer.print(&action)
+                self.printer.print(&action)?
             }
         }
+        Ok(())
     }
 
-    fn clear(&mut self) {
+    fn clear(&mut self) -> Result<(), PrintError> {
         self.printer.print(&AtomicAction::ClearScreen)
     }
 }
@@ -49,7 +50,7 @@ impl Screen for TerminalScreen {
 pub mod test_helper {
     use super::Visual;
     use crate::primitives::Point;
-    use crate::ui::{AtomicAction, Screen, Printer};
+    use crate::ui::{AtomicAction, Screen, Printer, PrintError};
     use crate::ui::printer_helper::InMemoryPrinter;
 
 
@@ -83,15 +84,16 @@ pub mod test_helper {
     }
 
     impl Screen for InMemoryScreen {
-        fn draw(&mut self) {
+        fn draw(&mut self) -> Result<(), PrintError> {
             for object in self.objects.iter() {
                 for action in object.to_actions() {
-                    self.printer.print(&action)
+                    self.printer.print(&action)?
                 }
             }
+            Ok(())
         }
 
-        fn clear(&mut self) {
+        fn clear(&mut self) -> Result<(), PrintError> {
             self.printer.print(&AtomicAction::ClearScreen)
         }
     }
@@ -100,7 +102,10 @@ pub mod test_helper {
         let (lines, cols) = screen_size;
         let mut screen = InMemoryScreen::new(lines, cols);
         screen.push_object(visual);
-        screen.draw();
+
+        if let Err(err) = screen.draw() {
+            assert!(false, format!("Failed to redraw: {}", err))
+        }
 
         let output: String = expected.into_iter().collect();
 

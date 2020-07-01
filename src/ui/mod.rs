@@ -2,7 +2,7 @@ mod atomic_action;
 pub use atomic_action::AtomicAction;
 
 mod printer;
-pub use printer::{Printer, StdoutPrinter};
+pub use printer::{Printer, StdoutPrinter, PrintError};
 
 mod screen;
 pub use screen::{Screen, TerminalScreen};

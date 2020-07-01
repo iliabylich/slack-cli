@@ -1,15 +1,16 @@
 use std::io::{self, Write};
+pub use std::io::Error as PrintError;
 
 use crate::ui::AtomicAction;
 
 pub trait Printer {
-    fn print(&mut self, action: &AtomicAction);
+    fn print(&mut self, action: &AtomicAction) -> Result<(), PrintError>;
 }
 
 pub struct StdoutPrinter {}
 
 impl Printer for StdoutPrinter {
-    fn print(&mut self, action: &AtomicAction) {
+    fn print(&mut self, action: &AtomicAction) -> Result<(), PrintError> {
         let str = match action {
             AtomicAction::ClearScreen => format!("{}", "\x1b[2J"),
             AtomicAction::MoveAt { point } => format!("\x1b[{};{}H", point.line, point.col),
@@ -21,8 +22,8 @@ impl Printer for StdoutPrinter {
             AtomicAction::SaveCursor => format!("\x1b[s"),
             AtomicAction::RestoreCursor => format!("\x1b]u"),
         };
-        io::stdout().write(str.as_bytes()).unwrap();
-        io::stdout().flush().unwrap();
+        io::stdout().write(str.as_bytes())?;
+        io::stdout().flush()
     }
 }
 
@@ -31,6 +32,7 @@ pub mod test_helper {
     use super::Printer;
     use crate::ui::AtomicAction;
     use crate::primitives::Point;
+    use super::PrintError;
 
     pub struct InMemoryPrinter {
         pub lines: i32,
@@ -55,7 +57,7 @@ pub mod test_helper {
     }
 
     impl Printer for InMemoryPrinter {
-        fn print(&mut self, action: &AtomicAction) {
+        fn print(&mut self, action: &AtomicAction) -> Result<(), PrintError> {
             match action {
                 AtomicAction::ClearScreen => {
                     self.state = vec![vec![' '; self.cols as usize]; self.lines as usize];
@@ -86,6 +88,7 @@ pub mod test_helper {
                     self.currently_at = self.saved_cursor.clone();
                 },
             }
+            Ok(())
         }
     }
 }
