@@ -47,7 +47,7 @@ pub mod test_helper {
             let mut result = String::from("");
 
             for line in self.state.iter() {
-                let line: String = line.into_iter().collect();
+                let line = line.into_iter().collect::<String>();
                 result.push_str(&line[..]);
                 result.push_str("\n");
             }

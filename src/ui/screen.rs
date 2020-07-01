@@ -107,7 +107,7 @@ pub mod test_helper {
             assert!(false, format!("Failed to redraw: {}", err))
         }
 
-        let output: String = expected.into_iter().collect();
+        let output = expected.into_iter().collect::<String>();
 
         assert_eq!(
             screen.to_string(),
