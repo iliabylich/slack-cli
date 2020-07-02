@@ -1,4 +1,4 @@
-use ui::{Point, AtomicAction, VisualObject, Screen, Printer, PrintError};
+use ui::{Point, AtomicAction, VisualObject, Screen, Printer, IoResult};
 use crate::InMemoryPrinter;
 
 type Visual = Box<dyn VisualObject>;
@@ -33,7 +33,7 @@ impl InMemoryScreen {
 }
 
 impl Screen for InMemoryScreen {
-    fn draw(&mut self) -> Result<(), PrintError> {
+    fn draw(&mut self) -> IoResult {
         for object in self.objects.iter() {
             for action in object.to_actions() {
                 self.printer.print(&action)?
@@ -42,7 +42,7 @@ impl Screen for InMemoryScreen {
         Ok(())
     }
 
-    fn clear(&mut self) -> Result<(), PrintError> {
+    fn clear(&mut self) -> IoResult {
         self.printer.print(&AtomicAction::ClearScreen)
     }
 }

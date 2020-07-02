@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use crate::{Response as HttpResponse, Error};
+use crate::{Response as HttpResponse, SlackError};
 
 #[derive(Eq, PartialEq, Clone, Debug, Serialize, Deserialize)]
 pub struct Conversation {

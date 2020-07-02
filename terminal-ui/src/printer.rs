@@ -1,11 +1,11 @@
 use std::io::{self, Write};
 
-use ui::{Printer, PrintError, AtomicAction};
+use ui::{Printer, IoResult, AtomicAction};
 
 pub struct TerminalPrinter {}
 
 impl Printer for TerminalPrinter {
-    fn print(&mut self, action: &AtomicAction) -> Result<(), PrintError> {
+    fn print(&mut self, action: &AtomicAction) -> IoResult {
         let str = match action {
             AtomicAction::ClearScreen => format!("{}", "\x1b[2J"),
             AtomicAction::MoveAt { point } => format!("\x1b[{};{}H", point.line, point.col),

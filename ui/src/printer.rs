@@ -1,6 +1,5 @@
-pub use std::io::Error as PrintError;
-use crate::AtomicAction;
+use crate::{AtomicAction, IoResult};
 
 pub trait Printer {
-    fn print(&mut self, action: &AtomicAction) -> Result<(), PrintError>;
+    fn print(&mut self, action: &AtomicAction) -> IoResult;
 }

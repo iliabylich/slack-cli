@@ -1,5 +1,5 @@
 
-use ui::{VisualObject, AtomicAction, Printer, PrintError, Screen};
+use ui::{VisualObject, AtomicAction, Printer, IoResult, Screen};
 use crate::TerminalPrinter;
 
 type Visual = Box<dyn VisualObject>;
@@ -20,7 +20,7 @@ impl TerminalScreen {
 }
 
 impl Screen for TerminalScreen {
-    fn draw(&mut self) -> Result<(), PrintError> {
+    fn draw(&mut self) -> IoResult {
         for object in self.objects.iter() {
             for action in object.to_actions() {
                 self.printer.print(&action)?
@@ -29,7 +29,7 @@ impl Screen for TerminalScreen {
         Ok(())
     }
 
-    fn clear(&mut self) -> Result<(), PrintError> {
+    fn clear(&mut self) -> IoResult {
         self.printer.print(&AtomicAction::ClearScreen)
     }
 }

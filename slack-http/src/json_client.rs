@@ -1,7 +1,7 @@
 use serde::de::DeserializeOwned;
 use serde_json;
 
-use crate::{Error, HttpClient, DefaultHttpClient};
+use crate::{SlackError, HttpClient, DefaultHttpClient};
 
 pub struct JsonClient {
     pub api_prefix: String,
@@ -9,7 +9,7 @@ pub struct JsonClient {
 }
 
 impl JsonClient {
-    pub fn new(token: String, api_prefix: String) -> Result<Self, Error> {
+    pub fn new(token: String, api_prefix: String) -> Result<Self, SlackError> {
         // let token = String::from("");
         println!("Using token {}", token);
         let http_client = DefaultHttpClient::new(token)?;
@@ -21,7 +21,7 @@ impl JsonClient {
         Self { api_prefix: String::from(""), http_client }
     }
 
-    pub fn get_json<T>(&self, method: &str) -> Result<T, Error> where T: DeserializeOwned {
+    pub fn get_json<T>(&self, method: &str) -> Result<T, SlackError> where T: DeserializeOwned {
         let url = format!("{}/{}", self.api_prefix, method);
         println!("Using url {}", url);
 

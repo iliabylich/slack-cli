@@ -1,12 +1,14 @@
 extern crate reqwest;
 extern crate serde_json;
 
+mod error;
+pub use error::Error as SlackError;
+
+pub type SlackResult<T> = std::result::Result<T, SlackError>;
+
 #[macro_use]
 mod response;
 pub use response::Response;
-
-mod error;
-pub use error::Error;
 
 mod http_client;
 pub use http_client::{HttpClient, DefaultHttpClient};

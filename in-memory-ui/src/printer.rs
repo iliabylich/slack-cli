@@ -1,4 +1,4 @@
-use ui::{Printer, Point, AtomicAction, PrintError};
+use ui::{Printer, Point, AtomicAction, IoResult};
 
 
 pub struct InMemoryPrinter {
@@ -24,7 +24,7 @@ impl InMemoryPrinter {
 }
 
 impl Printer for InMemoryPrinter {
-    fn print(&mut self, action: &AtomicAction) -> Result<(), PrintError> {
+    fn print(&mut self, action: &AtomicAction) -> IoResult {
         match action {
             AtomicAction::ClearScreen => {
                 self.state = vec![vec![' '; self.cols as usize]; self.lines as usize];
