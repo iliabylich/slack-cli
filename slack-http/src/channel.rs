@@ -35,11 +35,39 @@ pub mod meta {
                     if let Some(channels) = &self.channels {
                         return Ok(channels.clone());
                     } else {
-                        return Err(Error::from("'ok' is true, but 'channels' is null"))
+                        return Err(Error::from("'ok' is true, but 'channels' is null"));
                     }
                 }
                 if let Some(err) = &self.error {
-                    return Err(Error::from(err))
+                    return Err(Error::from(err));
+                }
+                Err(Error::from("Broken response format (no 'error' field)"))
+            }
+        }
+    }
+
+    pub mod find {
+        use super::*;
+        pub const METHOD: &str = "conversations.info";
+
+        #[derive(Debug, Serialize, Deserialize)]
+        pub struct Response {
+            pub ok: bool,
+            pub error: Option<String>,
+            pub channel: Option<Channel>,
+        }
+
+        impl HttpResponse<Channel> for Response {
+            fn to_result(&self) -> Result<Channel, Error> {
+                if self.ok {
+                    if let Some(channel) = &self.channel {
+                        return Ok(channel.clone())
+                    } else {
+                        return Err(Error::from("'ok' is true, but 'channel' is null"));
+                    }
+                }
+                if let Some(err) = &self.error {
+                    return Err(Error::from(err));
                 }
                 Err(Error::from("Broken response format (no 'error' field)"))
             }
@@ -81,6 +109,28 @@ mod tests {
                 Channel::new("42", "GitHub"),
                 Channel::new("17", "Work"),
             ]
+        )
+    }
+
+    #[test]
+    fn it_finds_channel() {
+        let request = "/conversations.info?channel=CHANNEL_ID";
+        let response = r#"
+            {
+                "ok": true,
+                "channel": {
+                    "id": "CHANNEL_ID",
+                    "name": "channel name"
+                }
+            }
+        "#;
+
+        let slack = get_test_slack_client(request, response);
+        let result = slack.find_channel("CHANNEL_ID").unwrap();
+
+        assert_eq!(
+            result,
+            Channel::new("CHANNEL_ID", "channel name")
         )
     }
 }

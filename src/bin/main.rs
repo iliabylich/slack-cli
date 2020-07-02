@@ -1,11 +1,3 @@
-// mod ui;
-// mod primitives;
-// mod http;
-
-// use primitives::{Point, Rectangle, Label, FromAtomicAction};
-// use ui::{Screen, TerminalScreen, AtomicAction};
-// use http::{SlackClient, Error};
-
 extern crate ui;
 extern crate ui_primitives;
 extern crate terminal_ui;

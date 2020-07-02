@@ -32,6 +32,12 @@ impl SlackClient {
         self.json_client.get_json::<ListChannelsResponse>(LIST_CHANNELS)?.to_result()
     }
 
+    pub fn find_channel(&self, channel_id: &str) -> Result<Channel, Error> {
+        use crate::channel_meta::find::{Response as FindChannelResponse, METHOD as FIND_CHANNEL};
+        let find_channel = format!("{}?channel={}", FIND_CHANNEL, channel_id);
+        self.json_client.get_json::<FindChannelResponse>(&find_channel)?.to_result()
+    }
+
     pub fn list_users(&self) -> Result<Vec<User>, Error> {
         use crate::user_meta::list::{Response as ListUsersResponse, METHOD as LIST_USERS};
         self.json_client.get_json::<ListUsersResponse>(LIST_USERS)?.to_result()
