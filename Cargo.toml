@@ -2,7 +2,9 @@
 members = [
     "slack-http",
     "ui-primitives",
-    "terminal-ui"
+    "ui",
+    "terminal-ui",
+    "in-memory-ui",
 ]
 
 [package]
@@ -17,4 +19,6 @@ default-run = "main"
 [dependencies]
 slack-http = { path = "slack-http" }
 ui-primitives = { path = "ui-primitives" }
+ui = { path = "ui" }
 terminal-ui = { path = "terminal-ui" }
+in-memory-ui = { path = "in-memory-ui" }

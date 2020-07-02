@@ -6,11 +6,13 @@
 // use ui::{Screen, TerminalScreen, AtomicAction};
 // use http::{SlackClient, Error};
 
+extern crate ui;
 extern crate ui_primitives;
 extern crate terminal_ui;
 extern crate slack_http;
 
-use ui_primitives::{Point, Rectangle, Label, FromAtomicAction, AtomicAction, Screen};
+use ui::{Point, AtomicAction, Screen};
+use ui_primitives::{Rectangle, Label, FromAtomicAction};
 use terminal_ui::{TerminalScreen};
 use slack_http::{SlackClient, Error};
 

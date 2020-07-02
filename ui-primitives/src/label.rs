@@ -1,4 +1,4 @@
-use crate::{Point, AtomicAction, VisualObject};
+use ui::{Point, AtomicAction, VisualObject};
 
 #[derive(Debug, Clone)]
 pub struct Label {
@@ -22,14 +22,13 @@ impl VisualObject for Label {
 
 #[cfg(test)]
 mod tests {
-    use super::Label;
-    use crate::{Point, screen_helper::assert_prints};
+    use super::*;
 
     #[test]
     fn it_prints() {
-        assert_prints(
+        assert_prints!(
             (5, 5),
-            Box::new(Label { text: String::from("abc"), at: Point { line: 2, col: 1 } }),
+            Label { text: String::from("abc"), at: Point { line: 2, col: 1 } },
             vec![
                 ' ', ' ', ' ', ' ', ' ', '\n',
                 ' ', ' ', ' ', ' ', ' ', '\n',

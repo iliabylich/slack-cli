@@ -1,4 +1,5 @@
-use crate::{Point, AtomicAction, VisualObject, HorizontalLine, VerticalLine};
+use ui::{Point, AtomicAction, VisualObject};
+use crate::{HorizontalLine, VerticalLine};
 
 #[derive(Debug, Clone)]
 pub struct Rectangle {
@@ -50,14 +51,13 @@ impl VisualObject for Rectangle {
 
 #[cfg(test)]
 mod tests {
-    use super::Rectangle;
-    use crate::{Point, screen_helper::assert_prints};
+    use super::*;
 
     #[test]
     fn it_prints() {
-        assert_prints(
+        assert_prints!(
             (5, 5),
-            Box::new(Rectangle { top_left: Point { line: 0, col: 0 }, bottom_right: Point { line: 2, col: 3 } }),
+            Rectangle { top_left: Point { line: 0, col: 0 }, bottom_right: Point { line: 2, col: 3 } },
             vec![
                 '┏', '━', '━', '┓', ' ', '\n',
                 '┃', ' ', ' ', '┃', ' ', '\n',

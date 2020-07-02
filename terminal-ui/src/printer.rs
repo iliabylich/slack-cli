@@ -1,12 +1,10 @@
 use std::io::{self, Write};
 
-use ui_primitives::{Printer, PrintError};
+use ui::{Printer, PrintError, AtomicAction};
 
-use ui_primitives::AtomicAction;
+pub struct TerminalPrinter {}
 
-pub struct StdoutPrinter {}
-
-impl Printer for StdoutPrinter {
+impl Printer for TerminalPrinter {
     fn print(&mut self, action: &AtomicAction) -> Result<(), PrintError> {
         let str = match action {
             AtomicAction::ClearScreen => format!("{}", "\x1b[2J"),

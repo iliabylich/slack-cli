@@ -1,17 +1,17 @@
 
-use ui_primitives::{VisualObject, AtomicAction, Printer, PrintError, Screen};
-use crate::StdoutPrinter;
+use ui::{VisualObject, AtomicAction, Printer, PrintError, Screen};
+use crate::TerminalPrinter;
 
 type Visual = Box<dyn VisualObject>;
 
 pub struct TerminalScreen {
     objects: Vec<Visual>,
-    printer: StdoutPrinter
+    printer: TerminalPrinter
 }
 
 impl TerminalScreen {
     pub fn new() -> Self {
-        Self { objects: vec![], printer: StdoutPrinter {} }
+        Self { objects: vec![], printer: TerminalPrinter {} }
     }
 
     pub fn push_object(&mut self, object: Visual) {

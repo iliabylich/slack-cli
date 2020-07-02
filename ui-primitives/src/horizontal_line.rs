@@ -1,4 +1,4 @@
-use crate::{Point, AtomicAction, VisualObject};
+use ui::{Point, AtomicAction, VisualObject};
 
 #[derive(Debug, Clone)]
 pub struct HorizontalLine {
@@ -23,14 +23,13 @@ impl VisualObject for HorizontalLine {
 
 #[cfg(test)]
 mod tests {
-    use super::HorizontalLine;
-    use crate::{Point, screen_helper::assert_prints};
+    use super::*;
 
     #[test]
     fn it_prints() {
-        assert_prints(
+        assert_prints!(
             (5, 5),
-            Box::new(HorizontalLine { left: Point { line: 2, col: 1 }, length: 3 }),
+            HorizontalLine { left: Point { line: 2, col: 1 }, length: 3 },
             vec![
                 ' ', ' ', ' ', ' ', ' ', '\n',
                 ' ', ' ', ' ', ' ', ' ', '\n',

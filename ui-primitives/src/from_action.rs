@@ -1,4 +1,4 @@
-use crate::{AtomicAction, VisualObject};
+use ui::{AtomicAction, VisualObject};
 
 #[derive(Debug, Clone)]
 pub struct FromAtomicAction {
@@ -20,14 +20,13 @@ impl VisualObject for FromAtomicAction {
 
 #[cfg(test)]
 mod tests {
-    use super::FromAtomicAction;
-    use crate::{screen_helper::assert_prints, AtomicAction};
+    use super::*;
 
     #[test]
     fn it_prints() {
-        assert_prints(
+        assert_prints!(
             (5, 5),
-            Box::new(FromAtomicAction { action: AtomicAction::Print { char: 'x' } }),
+            FromAtomicAction { action: AtomicAction::Print { char: 'x' } },
             vec![
                 'x', ' ', ' ', ' ', ' ', '\n',
                 ' ', ' ', ' ', ' ', ' ', '\n',

@@ -1,9 +1,7 @@
-extern crate ui_primitives;
-
-pub use ui_primitives::AtomicAction;
+extern crate ui;
 
 mod printer;
-pub use printer::StdoutPrinter;
+pub use printer::TerminalPrinter;
 
 mod screen;
 pub use screen::TerminalScreen;

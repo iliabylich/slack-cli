@@ -1,4 +1,4 @@
-use crate::{Point, AtomicAction, VisualObject};
+use ui::{Point, AtomicAction, VisualObject};
 
 #[derive(Debug, Clone)]
 pub struct VerticalLine {
@@ -24,14 +24,13 @@ impl VisualObject for VerticalLine {
 
 #[cfg(test)]
 mod tests {
-    use super::VerticalLine;
-    use crate::{Point, screen_helper::assert_prints};
+    use super::*;
 
     #[test]
     fn it_prints() {
-        assert_prints(
+        assert_prints!(
             (5, 5),
-            Box::new(VerticalLine { top: Point { line: 1, col: 1 }, length: 3 }),
+            VerticalLine { top: Point { line: 1, col: 1 }, length: 3 },
             vec![
                 ' ', ' ', ' ', ' ', ' ', '\n',
                 ' ', '┃', ' ', ' ', ' ', '\n',
