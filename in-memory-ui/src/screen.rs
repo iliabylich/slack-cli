@@ -47,23 +47,6 @@ impl Screen for InMemoryScreen {
     }
 }
 
-pub fn assert_prints(screen_size: (i32, i32), visual: Visual, expected: Vec<char>) {
-    let (lines, cols) = screen_size;
-    let mut screen = InMemoryScreen::new(lines, cols);
-    screen.push_object(visual);
-
-    if let Err(err) = screen.draw() {
-        assert!(false, format!("Failed to redraw: {}", err))
-    }
-
-    let output = expected.into_iter().collect::<String>();
-
-    assert_eq!(
-        screen.to_string(),
-        output
-    );
-}
-
 #[macro_export]
 macro_rules! assert_prints {
     ($size: expr, $visual: expr, $expected: expr) => {

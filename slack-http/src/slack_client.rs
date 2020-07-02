@@ -1,6 +1,6 @@
 use std::env;
 
-use crate::{JsonClient, Response, Channel, User, Error};
+use crate::{JsonClient, Response, Error, Conversation, User, Message};
 
 pub struct SlackClient {
     pub json_client: JsonClient
@@ -27,15 +27,21 @@ impl SlackClient {
         Self { json_client }
     }
 
-    pub fn list_channels(&self) -> Result<Vec<Channel>, Error> {
-        use crate::channel_meta::list::{Response as ListChannelsResponse, METHOD as LIST_CHANNELS};
-        self.json_client.get_json::<ListChannelsResponse>(LIST_CHANNELS)?.to_result()
+    pub fn list_conversations(&self) -> Result<Vec<Conversation>, Error> {
+        use crate::conversation_meta::list::{Response, METHOD};
+        self.json_client.get_json::<Response>(METHOD)?.to_result()
     }
 
-    pub fn find_channel(&self, channel_id: &str) -> Result<Channel, Error> {
-        use crate::channel_meta::find::{Response as FindChannelResponse, METHOD as FIND_CHANNEL};
-        let find_channel = format!("{}?channel={}", FIND_CHANNEL, channel_id);
-        self.json_client.get_json::<FindChannelResponse>(&find_channel)?.to_result()
+    pub fn find_conversation(&self, conversation_id: &str) -> Result<Conversation, Error> {
+        use crate::conversation_meta::find::{Response, METHOD};
+        let method = format!("{}?channel={}", METHOD, conversation_id);
+        self.json_client.get_json::<Response>(&method)?.to_result()
+    }
+
+    pub fn conversation_history(&self, conversation_id: &str) -> Result<Vec<Message>, Error> {
+        use crate::conversation_meta::history::{Response, METHOD};
+        let method = format!("{}?channel={}", METHOD, conversation_id);
+        self.json_client.get_json::<Response>(&method)?.to_result()
     }
 
     pub fn list_users(&self) -> Result<Vec<User>, Error> {

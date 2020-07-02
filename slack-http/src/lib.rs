@@ -1,6 +1,7 @@
 extern crate reqwest;
 extern crate serde_json;
 
+#[macro_use]
 mod response;
 pub use response::Response;
 
@@ -16,20 +17,14 @@ pub use json_client::JsonClient;
 mod slack_client;
 pub use slack_client::SlackClient;
 
-mod channel;
-pub use channel::{Channel, meta as channel_meta};
+mod conversation;
+pub use conversation::{Conversation, meta as conversation_meta};
+
+mod message;
+pub use message::{Message, meta as message_meta};
 
 mod user;
 pub use user::{User, meta as user_meta};
 
 #[cfg(test)]
 pub use http_client::test_helper as http_helper;
-
-
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn it_lists_channels() {
-        assert_eq!(1, 1);
-    }
-}

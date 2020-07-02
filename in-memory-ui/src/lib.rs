@@ -5,4 +5,4 @@ pub use printer::InMemoryPrinter;
 
 #[macro_use]
 mod screen;
-pub use screen::{InMemoryScreen, assert_prints};
+pub use screen::InMemoryScreen;

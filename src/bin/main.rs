@@ -28,11 +28,14 @@ fn main() -> Result<(), Error> {
     screen.redraw().unwrap_or_else(|err| panic!("Failed to draw, {}", err));
 
     let client = SlackClient::new_from_env()?;
-    let channels = client.list_channels()?;
-    println!("{:#?}", channels);
+    let conversations = client.list_conversations()?;
+    println!("{:#?}", conversations);
 
     let users = client.list_users()?;
     println!("{:#?}", users);
+
+    let messages = client.conversation_history("C016CGERTDF")?;
+    println!("{:#?}", messages);
 
     Ok(())
 }
