@@ -1,5 +1,5 @@
 [package]
-name = "slack-http"
+name = "http-resource"
 version = "0.1.0"
 authors = ["Ilya Bylich <ibylich@gmail.com>"]
 edition = "2018"
@@ -7,7 +7,10 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-serde = { version = "1.0.114", features = ["derive"] }
-serde_json = "1.0.56"
-reqwest = { version = "0.10.6", features = ["blocking"] }
-http-resource = { path = "../http-resource" }
+syn = { version = "1.0.33", features = ["extra-traits"] }
+proc-macro2 = "1.0.18"
+quote = "1.0.7"
+
+
+[lib]
+proc-macro = true

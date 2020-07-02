@@ -23,14 +23,13 @@ pub mod meta {
         use super::*;
         pub const METHOD: &str = "users.list";
 
-        #[derive(Debug, Serialize, Deserialize)]
+        #[derive(Debug, Serialize, Deserialize, HttpResource)]
         pub struct Response {
             pub ok: bool,
             pub error: Option<String>,
+            #[result]
             pub members: Option<Vec<User>>,
         }
-
-        define_conversion_to_result!(Response, members: Vec<User>);
     }
 }
 

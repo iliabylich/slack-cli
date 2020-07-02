@@ -23,28 +23,26 @@ pub mod meta {
         pub const METHOD: &str = "conversations.list";
 
 
-        #[derive(Debug, Serialize, Deserialize)]
+        #[derive(Debug, Serialize, Deserialize, HttpResource)]
         pub struct Response {
             pub ok: bool,
             pub error: Option<String>,
+            #[result]
             pub channels: Option<Vec<Conversation>>,
         }
-
-        define_conversion_to_result!(Response, channels: Vec<Conversation>);
     }
 
     pub mod find {
         use super::*;
         pub const METHOD: &str = "conversations.info";
 
-        #[derive(Debug, Serialize, Deserialize)]
+        #[derive(Debug, Serialize, Deserialize, HttpResource)]
         pub struct Response {
             pub ok: bool,
             pub error: Option<String>,
+            #[result]
             pub channel: Option<Conversation>,
         }
-
-        define_conversion_to_result!(Response, channel: Conversation);
     }
 
     pub mod history {
@@ -52,14 +50,13 @@ pub mod meta {
         pub const METHOD: &str = "conversations.history";
         use crate::Message;
 
-        #[derive(Debug, Serialize, Deserialize)]
+        #[derive(Debug, Serialize, Deserialize, HttpResource)]
         pub struct Response {
             pub ok: bool,
             pub error: Option<String>,
+            #[result]
             pub messages: Option<Vec<Message>>,
         }
-
-        define_conversion_to_result!(Response, messages: Vec<Message>);
     }
 }
 

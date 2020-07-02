@@ -30,3 +30,6 @@ pub use user::{User, meta as user_meta};
 
 #[cfg(test)]
 pub use http_client::test_helper as http_helper;
+
+#[macro_use]
+extern crate http_resource;

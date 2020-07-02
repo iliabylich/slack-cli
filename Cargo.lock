@@ -238,6 +238,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "http-resource"
+version = "0.1.0"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
+]
+
+[[package]]
 name = "httparse"
 version = "1.3.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -783,6 +792,7 @@ checksum = "c111b5bd5695e56cffe5129854aa230b39c93a305372fdbb2668ca2394eea9f8"
 name = "slack-cli"
 version = "0.1.0"
 dependencies = [
+ "http-resource",
  "slack-http",
  "ui-abstract",
  "ui-in-memory",
@@ -794,6 +804,7 @@ dependencies = [
 name = "slack-http"
 version = "0.1.0"
 dependencies = [
+ "http-resource",
  "reqwest",
  "serde",
  "serde_json",
