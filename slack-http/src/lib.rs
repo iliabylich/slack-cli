@@ -24,3 +24,12 @@ pub use user::{User, meta as user_meta};
 
 #[cfg(test)]
 pub use http_client::test_helper as http_helper;
+
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn it_lists_channels() {
+        assert_eq!(1, 1);
+    }
+}

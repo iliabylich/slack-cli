@@ -1,6 +1,6 @@
 use reqwest::{blocking, header};
 
-use crate::http::Error;
+use crate::Error;
 
 pub trait HttpClient {
     fn get(&self, url: String) -> Result<String, Error>;
@@ -33,7 +33,7 @@ pub mod test_helper {
     use super::*;
 
     use std::collections::HashMap;
-    use crate::http::{SlackClient, JsonClient};
+    use crate::{SlackClient, JsonClient};
 
     #[derive(Hash, Eq, PartialEq, Debug)]
     pub struct FakeRequest {

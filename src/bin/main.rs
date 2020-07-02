@@ -1,10 +1,18 @@
-mod ui;
-mod primitives;
-mod http;
+// mod ui;
+// mod primitives;
+// mod http;
 
-use primitives::{Point, Rectangle, Label, FromAtomicAction};
-use ui::{Screen, TerminalScreen, AtomicAction};
-use http::{SlackClient, Error};
+// use primitives::{Point, Rectangle, Label, FromAtomicAction};
+// use ui::{Screen, TerminalScreen, AtomicAction};
+// use http::{SlackClient, Error};
+
+extern crate ui_primitives;
+extern crate terminal_ui;
+extern crate slack_http;
+
+use ui_primitives::{Point, Rectangle, Label, FromAtomicAction, AtomicAction, Screen};
+use terminal_ui::{TerminalScreen};
+use slack_http::{SlackClient, Error};
 
 fn main() -> Result<(), Error> {
     let mut screen = TerminalScreen::new();

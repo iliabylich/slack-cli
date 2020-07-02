@@ -1,7 +1,7 @@
 use serde::de::DeserializeOwned;
 use serde_json;
 
-use crate::http::{Error, HttpClient, DefaultHttpClient};
+use crate::{Error, HttpClient, DefaultHttpClient};
 
 pub struct JsonClient {
     pub api_prefix: String,

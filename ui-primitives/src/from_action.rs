@@ -1,5 +1,4 @@
-use crate::ui::AtomicAction;
-use crate::primitives::VisualObject;
+use crate::{AtomicAction, VisualObject};
 
 #[derive(Debug, Clone)]
 pub struct FromAtomicAction {
@@ -22,7 +21,7 @@ impl VisualObject for FromAtomicAction {
 #[cfg(test)]
 mod tests {
     use super::FromAtomicAction;
-    use crate::{ui::screen_helper::assert_prints, AtomicAction};
+    use crate::{screen_helper::assert_prints, AtomicAction};
 
     #[test]
     fn it_prints() {

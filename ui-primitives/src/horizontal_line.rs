@@ -1,6 +1,4 @@
-use crate::primitives::Point;
-use crate::ui::AtomicAction;
-use crate::primitives::VisualObject;
+use crate::{Point, AtomicAction, VisualObject};
 
 #[derive(Debug, Clone)]
 pub struct HorizontalLine {
@@ -26,7 +24,7 @@ impl VisualObject for HorizontalLine {
 #[cfg(test)]
 mod tests {
     use super::HorizontalLine;
-    use crate::{primitives::Point, ui::screen_helper::assert_prints};
+    use crate::{Point, screen_helper::assert_prints};
 
     #[test]
     fn it_prints() {

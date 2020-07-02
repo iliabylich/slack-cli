@@ -1,9 +1,5 @@
 
-use crate::primitives::VisualObject;
-use super::AtomicAction;
-use super::{Printer, StdoutPrinter, PrintError};
-
-type Visual = Box<dyn VisualObject>;
+use crate::{PrintError};
 
 pub trait Screen {
     fn draw(&mut self) -> Result<(), PrintError>;
@@ -16,42 +12,13 @@ pub trait Screen {
     }
 }
 
-pub struct TerminalScreen {
-    objects: Vec<Visual>,
-    printer: StdoutPrinter
-}
-
-impl TerminalScreen {
-    pub fn new() -> Self {
-        Self { objects: vec![], printer: StdoutPrinter {} }
-    }
-
-    pub fn push_object(&mut self, object: Visual) {
-        self.objects.push(object)
-    }
-}
-
-impl Screen for TerminalScreen {
-    fn draw(&mut self) -> Result<(), PrintError> {
-        for object in self.objects.iter() {
-            for action in object.to_actions() {
-                self.printer.print(&action)?
-            }
-        }
-        Ok(())
-    }
-
-    fn clear(&mut self) -> Result<(), PrintError> {
-        self.printer.print(&AtomicAction::ClearScreen)
-    }
-}
-
 #[cfg(test)]
 pub mod test_helper {
-    use super::Visual;
-    use crate::primitives::Point;
-    use crate::ui::{AtomicAction, Screen, Printer, PrintError};
-    use crate::ui::printer_helper::InMemoryPrinter;
+    use crate::{Point, AtomicAction, VisualObject};
+    use crate::{Screen, Printer, PrintError};
+    use crate::printer_helper::InMemoryPrinter;
+
+    type Visual = Box<dyn VisualObject>;
 
     pub struct InMemoryScreen {
         objects: Vec<Visual>,

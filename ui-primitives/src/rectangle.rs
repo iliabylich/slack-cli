@@ -1,9 +1,4 @@
-use crate::primitives::Point;
-use crate::ui::AtomicAction;
-use crate::primitives::VisualObject;
-use crate::primitives::HorizontalLine;
-use crate::primitives::VerticalLine;
-
+use crate::{Point, AtomicAction, VisualObject, HorizontalLine, VerticalLine};
 
 #[derive(Debug, Clone)]
 pub struct Rectangle {
@@ -56,7 +51,7 @@ impl VisualObject for Rectangle {
 #[cfg(test)]
 mod tests {
     use super::Rectangle;
-    use crate::{primitives::Point, ui::screen_helper::assert_prints};
+    use crate::{Point, screen_helper::assert_prints};
 
     #[test]
     fn it_prints() {

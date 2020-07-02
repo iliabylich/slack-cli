@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use crate::http::{Response as HttpResponse, Error};
+use crate::{Response as HttpResponse, Error};
 
 #[derive(Eq, PartialEq, Clone, Debug, Serialize, Deserialize)]
 pub struct Channel {
@@ -50,7 +50,7 @@ pub mod meta {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::http::http_helper::get_test_slack_client;
+    use crate::http_helper::get_test_slack_client;
 
     #[test]
     fn it_lists_channels() {

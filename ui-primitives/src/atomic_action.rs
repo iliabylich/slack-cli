@@ -1,4 +1,4 @@
-use crate::primitives::Point;
+use crate::Point;
 
 #[derive(Debug, Clone)]
 #[allow(dead_code)]

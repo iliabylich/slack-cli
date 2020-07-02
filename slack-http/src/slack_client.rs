@@ -1,6 +1,6 @@
 use std::env;
 
-use crate::http::{JsonClient, Response, Channel, User, Error};
+use crate::{JsonClient, Response, Channel, User, Error};
 
 pub struct SlackClient {
     pub json_client: JsonClient
@@ -28,12 +28,12 @@ impl SlackClient {
     }
 
     pub fn list_channels(&self) -> Result<Vec<Channel>, Error> {
-        use crate::http::channel_meta::list::{Response as ListChannelsResponse, METHOD as LIST_CHANNELS};
+        use crate::channel_meta::list::{Response as ListChannelsResponse, METHOD as LIST_CHANNELS};
         self.json_client.get_json::<ListChannelsResponse>(LIST_CHANNELS)?.to_result()
     }
 
     pub fn list_users(&self) -> Result<Vec<User>, Error> {
-        use crate::http::user_meta::list::{Response as ListUsersResponse, METHOD as LIST_USERS};
+        use crate::user_meta::list::{Response as ListUsersResponse, METHOD as LIST_USERS};
         self.json_client.get_json::<ListUsersResponse>(LIST_USERS)?.to_result()
     }
 }
