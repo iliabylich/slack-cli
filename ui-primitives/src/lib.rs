@@ -1,4 +1,4 @@
-extern crate ui;
+extern crate ui_abstract;
 
 mod from_action;
 mod horizontal_line;
@@ -14,4 +14,4 @@ pub use label::Label;
 
 #[cfg(test)]
 #[macro_use]
-extern crate in_memory_ui;
+extern crate ui_in_memory;

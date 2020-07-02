@@ -7,5 +7,5 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-ui = { path = "../ui" }
-in-memory-ui = { path = "../in-memory-ui" }
+ui-abstract = { path = "../ui-abstract" }
+ui-in-memory = { path = "../ui-in-memory" }

@@ -1,4 +1,4 @@
-use ui::{Point, AtomicAction, VisualObject};
+use ui_abstract::{Point, AtomicAction, VisualObject};
 use crate::{HorizontalLine, VerticalLine};
 
 #[derive(Debug, Clone)]

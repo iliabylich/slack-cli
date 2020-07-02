@@ -1,11 +1,11 @@
-extern crate ui;
+extern crate ui_abstract;
 extern crate ui_primitives;
-extern crate terminal_ui;
+extern crate ui_terminal;
 extern crate slack_http;
 
-use ui::{Point, AtomicAction, Screen};
+use ui_abstract::{Point, AtomicAction, Screen};
 use ui_primitives::{Rectangle, Label, FromAtomicAction};
-use terminal_ui::{TerminalScreen};
+use ui_terminal::{TerminalScreen};
 use slack_http::{SlackClient, SlackResult};
 
 fn main() -> SlackResult<()> {

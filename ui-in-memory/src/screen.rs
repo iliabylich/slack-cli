@@ -1,4 +1,4 @@
-use ui::{Point, AtomicAction, VisualObject, Screen, Printer, IoResult};
+use ui_abstract::{Point, AtomicAction, VisualObject, Screen, Printer, IoResult};
 use crate::InMemoryPrinter;
 
 type Visual = Box<dyn VisualObject>;
@@ -50,8 +50,8 @@ impl Screen for InMemoryScreen {
 #[macro_export]
 macro_rules! assert_prints {
     ($size: expr, $visual: expr, $expected: expr) => {
-        use in_memory_ui::InMemoryScreen;
-        use ui::{Screen};
+        use ui_in_memory::InMemoryScreen;
+        use ui_abstract::{Screen};
 
         let (lines, cols) = $size;
         let mut screen = InMemoryScreen::new(lines, cols);

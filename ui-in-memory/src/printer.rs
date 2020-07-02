@@ -1,4 +1,4 @@
-use ui::{Printer, Point, AtomicAction, IoResult};
+use ui_abstract::{Printer, Point, AtomicAction, IoResult};
 
 
 pub struct InMemoryPrinter {

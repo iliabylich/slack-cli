@@ -1,5 +1,5 @@
 
-use ui::{VisualObject, AtomicAction, Printer, IoResult, Screen};
+use ui_abstract::{VisualObject, AtomicAction, Printer, IoResult, Screen};
 use crate::TerminalPrinter;
 
 type Visual = Box<dyn VisualObject>;

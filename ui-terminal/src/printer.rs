@@ -1,6 +1,6 @@
 use std::io::{self, Write};
 
-use ui::{Printer, IoResult, AtomicAction};
+use ui_abstract::{Printer, IoResult, AtomicAction};
 
 pub struct TerminalPrinter {}
 

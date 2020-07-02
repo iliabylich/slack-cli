@@ -1,4 +1,4 @@
-extern crate ui;
+extern crate ui_abstract;
 
 mod printer;
 pub use printer::TerminalPrinter;

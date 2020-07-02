@@ -1,4 +1,4 @@
-use ui::{Point, AtomicAction, VisualObject};
+use ui_abstract::{Point, AtomicAction, VisualObject};
 
 #[derive(Debug, Clone)]
 pub struct Label {

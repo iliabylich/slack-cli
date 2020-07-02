@@ -1,4 +1,4 @@
-use ui::{AtomicAction, VisualObject};
+use ui_abstract::{AtomicAction, VisualObject};
 
 #[derive(Debug, Clone)]
 pub struct FromAtomicAction {

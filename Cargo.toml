@@ -1,10 +1,10 @@
 [workspace]
 members = [
-    "slack-http",
+    "ui-abstract",
     "ui-primitives",
-    "ui",
-    "terminal-ui",
-    "in-memory-ui",
+    "ui-terminal",
+    "ui-in-memory",
+    "slack-http",
 ]
 
 [package]
@@ -17,8 +17,8 @@ default-run = "main"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-slack-http = { path = "slack-http" }
+ui-abstract = { path = "ui-abstract" }
 ui-primitives = { path = "ui-primitives" }
-ui = { path = "ui" }
-terminal-ui = { path = "terminal-ui" }
-in-memory-ui = { path = "in-memory-ui" }
+ui-terminal = { path = "ui-terminal" }
+ui-in-memory = { path = "ui-in-memory" }
+slack-http = { path = "slack-http" }
