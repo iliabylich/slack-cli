@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use crate::{Response as HttpResponse, SlackError};
+use crate::{Response as HttpResponse};
 
 #[derive(Eq, PartialEq, Clone, Debug, Serialize, Deserialize)]
 pub struct User {
@@ -30,21 +30,7 @@ pub mod meta {
             pub members: Option<Vec<User>>,
         }
 
-        impl HttpResponse<Vec<User>> for Response {
-            fn to_result(&self) -> Result<Vec<User>, SlackError> {
-                if self.ok {
-                    if let Some(users) = &self.members {
-                        return Ok(users.clone());
-                    } else {
-                        return Err(SlackError::from("'ok' is true, but 'members' is null"))
-                    }
-                }
-                if let Some(err) = &self.error {
-                    return Err(SlackError::from(err))
-                }
-                Err(SlackError::from("Broken response format (no 'error' field)"))
-            }
-        }
+        define_conversion_to_result!(Response, members: Vec<User>);
     }
 }
 

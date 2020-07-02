@@ -1,6 +1,6 @@
 use std::env;
 
-use crate::{JsonClient, Response, SlackError, Conversation, User, Message};
+use crate::{JsonClient, Response, SlackError, SlackResult, Conversation, User, Message};
 
 pub struct SlackClient {
     pub json_client: JsonClient
@@ -9,12 +9,12 @@ pub struct SlackClient {
 const API_PREFIX: &str = "https://slack.com/api";
 
 impl SlackClient {
-    pub fn new(token: String) -> Result<Self, SlackError> {
+    pub fn new(token: String) -> SlackResult<Self> {
         let json_client = JsonClient::new(token, String::from(API_PREFIX))?;
         Ok(Self { json_client })
     }
 
-    pub fn new_from_env() -> Result<Self, SlackError> {
+    pub fn new_from_env() -> SlackResult<Self> {
         let token = env::var("SLACK_TOKEN").map_err(|_err|
             SlackError::from("No SLACK_TOKEN env variable")
         )?;
@@ -27,24 +27,24 @@ impl SlackClient {
         Self { json_client }
     }
 
-    pub fn list_conversations(&self) -> Result<Vec<Conversation>, SlackError> {
+    pub fn list_conversations(&self) -> SlackResult<Vec<Conversation>> {
         use crate::conversation_meta::list::{Response, METHOD};
         self.json_client.get_json::<Response>(METHOD)?.to_result()
     }
 
-    pub fn find_conversation(&self, conversation_id: &str) -> Result<Conversation, SlackError> {
+    pub fn find_conversation(&self, conversation_id: &str) -> SlackResult<Conversation> {
         use crate::conversation_meta::find::{Response, METHOD};
         let method = format!("{}?channel={}", METHOD, conversation_id);
         self.json_client.get_json::<Response>(&method)?.to_result()
     }
 
-    pub fn conversation_history(&self, conversation_id: &str) -> Result<Vec<Message>, SlackError> {
+    pub fn conversation_history(&self, conversation_id: &str) -> SlackResult<Vec<Message>> {
         use crate::conversation_meta::history::{Response, METHOD};
         let method = format!("{}?channel={}", METHOD, conversation_id);
         self.json_client.get_json::<Response>(&method)?.to_result()
     }
 
-    pub fn list_users(&self) -> Result<Vec<User>, SlackError> {
+    pub fn list_users(&self) -> SlackResult<Vec<User>> {
         use crate::user_meta::list::{Response as ListUsersResponse, METHOD as LIST_USERS};
         self.json_client.get_json::<ListUsersResponse>(LIST_USERS)?.to_result()
     }
