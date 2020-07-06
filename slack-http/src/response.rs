@@ -1,4 +1,4 @@
 use crate::{SlackResult};
-pub trait Response<T>{
+pub(crate) trait Response<T>{
     fn to_result(&self) -> SlackResult<T>;
 }

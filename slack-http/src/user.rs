@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use crate::{Response as HttpResponse};
+use crate::response::{Response as HttpResponse};
 
 #[derive(Eq, PartialEq, Clone, Debug, Serialize, Deserialize)]
 pub struct User {
@@ -15,7 +15,7 @@ impl User {
     }
 }
 
-pub mod meta {
+pub(crate) mod meta {
     use super::*;
     use serde::{Deserialize, Serialize};
 
@@ -37,7 +37,7 @@ pub mod meta {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::http_helper::get_test_slack_client;
+    use crate::http_client::test_helper::get_test_slack_client;
 
     #[test]
     fn it_lists_users() {

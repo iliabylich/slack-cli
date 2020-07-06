@@ -1,9 +1,10 @@
 use serde::de::DeserializeOwned;
 use serde_json;
 
-use crate::{SlackResult, HttpClient, DefaultHttpClient};
+use crate::{SlackResult, HttpClient};
+use crate::http_client::DefaultHttpClient;
 
-pub struct JsonClient {
+pub(crate) struct JsonClient {
     pub api_prefix: String,
     pub http_client: Box<dyn HttpClient>
 }

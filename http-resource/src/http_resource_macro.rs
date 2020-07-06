@@ -3,7 +3,7 @@ use crate::quote::ToTokens;
 
 type StaticStr = &'static str;
 
-pub fn macro_impl(input: TokenStream2) -> Result<TokenStream2, String> {
+pub(crate) fn macro_impl(input: TokenStream2) -> Result<TokenStream2, String> {
     let input = syn::parse2::<syn::Item>(input).map_err(|err| format!("Syntax error: {}", err) )?;
 
     // 1. Parse struct definition

@@ -2,11 +2,11 @@ use reqwest::{blocking, header};
 
 use crate::{SlackResult, SlackError};
 
-pub trait HttpClient {
+pub(crate) trait HttpClient {
     fn get(&self, url: &str) -> SlackResult<String>;
 }
 
-pub struct DefaultHttpClient {
+pub(crate) struct DefaultHttpClient {
     http_client: blocking::Client
 }
 
@@ -29,7 +29,7 @@ impl HttpClient for DefaultHttpClient {
 }
 
 #[cfg(test)]
-pub mod test_helper {
+pub(crate) mod test_helper {
     use super::*;
 
     use std::collections::HashMap;
