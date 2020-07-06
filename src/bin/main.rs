@@ -5,11 +5,12 @@ extern crate slack_http;
 
 use ui_abstract::{Point, AtomicAction, Screen};
 use ui_primitives::{Rectangle, Label, FromAtomicAction};
-use ui_terminal::{TerminalScreen};
+use ui_terminal::TerminalScreen;
 use slack_http::{SlackClient, SlackResult};
 
 fn main() -> SlackResult<()> {
     let mut screen = TerminalScreen::new();
+    println!("screen_size: {:#?}", &screen.size);
 
     screen.push_object(Box::new(Rectangle { top_left: Point { line: 5, col: 5}, bottom_right: Point { line: 11, col: 30 } }));
     screen.push_object(Box::new(Label { at: Point { line: 8, col: 15 }, text: String::from("hello") }));

@@ -1,4 +1,3 @@
-
 use crate::IoResult;
 
 pub trait Screen {

@@ -1,6 +1,5 @@
 use ui_abstract::{Printer, Point, AtomicAction, IoResult};
 
-
 pub struct InMemoryPrinter {
     pub lines: i32,
     pub cols: i32,
@@ -10,6 +9,16 @@ pub struct InMemoryPrinter {
 }
 
 impl InMemoryPrinter {
+    pub fn new(lines: i32, cols: i32) -> Self {
+        Self {
+            lines,
+            cols,
+            state: vec![vec![' '; cols as usize]; lines as usize],
+            currently_at: Point { line: 0, col: 0 },
+            saved_cursor: Point { line: 0, col: 0 }
+        }
+    }
+
     pub fn to_string(&self) -> String {
         let mut result = String::from("");
 
