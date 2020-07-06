@@ -3,7 +3,7 @@ use reqwest::{blocking, header};
 use crate::{SlackResult, SlackError};
 
 pub trait HttpClient {
-    fn get(&self, url: String) -> SlackResult<String>;
+    fn get(&self, url: &str) -> SlackResult<String>;
 }
 
 pub struct DefaultHttpClient {
@@ -11,7 +11,7 @@ pub struct DefaultHttpClient {
 }
 
 impl DefaultHttpClient {
-    pub fn new(token: String) -> SlackResult<Self> {
+    pub fn new(token: &str) -> SlackResult<Self> {
         let mut headers = header::HeaderMap::new();
         let header = header::HeaderValue::from_str(&format!("Bearer {}", token))?;
         headers.insert(header::AUTHORIZATION, header);
@@ -21,8 +21,8 @@ impl DefaultHttpClient {
 }
 
 impl HttpClient for DefaultHttpClient {
-    fn get(&self, url: String) -> SlackResult<String> {
-        let response = self.http_client.get(&url).send().map_err(|err| SlackError::from(err).with_url(url) )?;
+    fn get(&self, url: &str) -> SlackResult<String> {
+        let response = self.http_client.get(url).send().map_err(|err| SlackError::from(err).with_url(url) )?;
         let body = response.text()?;
         Ok(body)
     }
@@ -70,14 +70,14 @@ pub mod test_helper {
             self.map.insert(request, response);
         }
 
-        pub fn find(&self, url: String) -> Option<&FakeResponse> {
-            self.map.get(&FakeRequest { url })
+        pub fn find(&self, url: &str) -> Option<&FakeResponse> {
+            self.map.get(&FakeRequest { url: String::from(url) })
         }
     }
 
     impl HttpClient for TestHttpClient {
-        fn get(&self, url: String) -> SlackResult<String> {
-            if let Some(response) = self.find(url.clone()) {
+        fn get(&self, url: &str) -> SlackResult<String> {
+            if let Some(response) = self.find(url) {
                 Ok(response.body.clone())
             } else {
                 Err(SlackError::from(format!("404 for {}", url)))

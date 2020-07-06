@@ -9,11 +9,11 @@ pub struct JsonClient {
 }
 
 impl JsonClient {
-    pub fn new(token: String, api_prefix: String) -> SlackResult<Self> {
+    pub fn new(token: &str, api_prefix: &str) -> SlackResult<Self> {
         // let token = String::from("");
         println!("Using token {}", token);
-        let http_client = DefaultHttpClient::new(token)?;
-        Ok(Self { http_client: Box::new(http_client), api_prefix })
+        let http_client = DefaultHttpClient::new(&token)?;
+        Ok(Self { http_client: Box::new(http_client), api_prefix: String::from(api_prefix) })
     }
 
     #[cfg(test)]
@@ -25,7 +25,7 @@ impl JsonClient {
         let url = format!("{}/{}", self.api_prefix, method);
         println!("Using url {}", url);
 
-        let body = self.http_client.get(url)?;
+        let body = self.http_client.get(&url)?;
         let json = serde_json::from_str::<T>(&body)?;
         Ok(json)
     }

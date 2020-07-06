@@ -1,7 +1,6 @@
 use crate::Point;
 
 #[derive(Debug, Clone)]
-#[allow(dead_code)]
 pub enum AtomicAction {
     ClearScreen,
     MoveAt { point: Point },

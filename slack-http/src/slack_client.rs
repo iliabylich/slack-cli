@@ -9,8 +9,8 @@ pub struct SlackClient {
 const API_PREFIX: &str = "https://slack.com/api";
 
 impl SlackClient {
-    pub fn new(token: String) -> SlackResult<Self> {
-        let json_client = JsonClient::new(token, String::from(API_PREFIX))?;
+    pub fn new(token: &str) -> SlackResult<Self> {
+        let json_client = JsonClient::new(token, API_PREFIX)?;
         Ok(Self { json_client })
     }
 
@@ -19,7 +19,7 @@ impl SlackClient {
             SlackError::from("No SLACK_TOKEN env variable")
         )?;
 
-        Self::new(token)
+        Self::new(&token)
     }
 
     #[cfg(test)]
