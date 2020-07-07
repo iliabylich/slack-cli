@@ -3,27 +3,33 @@ use std::time::Duration;
 use std::sync::mpsc;
 use std::sync::{Arc, Mutex};
 
-use slack_worker::{WorkerImplementation, Message, Worker as WorkerT};
+use slack_worker::{WorkerImplementation, Message, Worker};
 use crate::SlackState;
 
 type Sender = mpsc::Sender<Message>;
 type Receiver = mpsc::Receiver<Message>;
 
+type WorkerState = Arc<Mutex<SlackState>>;
+
 #[derive(Debug)]
 pub struct Implementation {
-    state: Arc<Mutex<SlackState>>,
-}
-
-impl Default for Implementation {
-    fn default() -> Self {
-        let state: SlackState = Default::default();
-        Self { state: Arc::new(Mutex::new(state)) }
-    }
+    state: WorkerState
 }
 
 impl WorkerImplementation for Implementation {
-    fn tick(&self, receiver: &Receiver, subscribers: &Vec<Sender>) {
+    type State = WorkerState;
+
+    fn new(state: Self::State) -> Self {
+        Self { state }
+    }
+
+    fn tick(&mut self, receiver: &Receiver, subscribers: &Vec<Sender>) {
         thread::sleep(Duration::from_secs(1));
+
+        {
+            let mut state = self.state.lock().unwrap();
+            state.uptime += 1;
+        }
 
         loop {
             match receiver.try_recv() {
@@ -39,4 +45,4 @@ impl WorkerImplementation for Implementation {
     }
 }
 
-pub type Worker = WorkerT<Implementation>;
+pub type SlackWorker = Worker<Implementation>;

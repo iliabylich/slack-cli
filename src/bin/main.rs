@@ -1,24 +1,30 @@
 use ui_abstract::{Point, AtomicAction, Screen};
 use ui_primitives::{Rectangle, Label, FromAtomicAction};
 use ui_terminal::TerminalScreen;
-use slack_http::{SlackResult, Worker as SlackWorker};
-use slack_worker::{Message, Worker, WorkerImplementation, Sender, Receiver};
+use slack_http::{SlackResult, SlackWorker, SlackState};
+use slack_worker::{Message, Worker, Spawn, WorkerImplementation, Sender, Receiver};
 
 use std::sync::mpsc;
 use std::time::Duration;
 use std::thread;
+use std::sync::{Arc, Mutex};
 
 #[derive(Debug, Default)]
 struct Render {
+    slack_state: Arc<Mutex<SlackState>>
 }
 impl Render {
-    pub fn redraw(&self) {
-        thread::sleep(Duration::from_millis(100));
+    pub fn redraw(&mut self) {
         let mut screen = TerminalScreen::new().unwrap();
         println!("screen_size: {:#?}", &screen.size);
 
+        let uptime = {
+            let state = self.slack_state.lock().unwrap();
+            state.uptime
+        };
+
         screen.push_object(Box::new(Rectangle { top_left: Point { line: 5, col: 5}, bottom_right: Point { line: 11, col: 30 } }));
-        screen.push_object(Box::new(Label { at: Point { line: 8, col: 15 }, text: String::from("hello") }));
+        screen.push_object(Box::new(Label { at: Point { line: 8, col: 15 }, text: format!("hello {}", uptime) }));
         screen.push_object(
             Box::new(
                 FromAtomicAction::new(
@@ -35,29 +41,29 @@ impl Render {
     }
 }
 impl WorkerImplementation for Render {
-    fn tick(&self, _receiver: &Receiver, _subscribers: &Vec<Sender>) {
-        thread::sleep(Duration::from_secs(1));
+    type State = Arc<Mutex<SlackState>>;
+
+    fn new(state: Arc<Mutex<SlackState>>) -> Self {
+        Self { slack_state: state }
+    }
+
+    fn tick(&mut self, _receiver: &Receiver, _subscribers: &Vec<Sender>) {
+        thread::sleep(Duration::from_millis(1000));
         self.redraw();
     }
 }
 type RenderWorker = Worker<Render>;
 
 fn main() -> SlackResult<()> {
+    let state = Arc::new(Mutex::new(SlackState::default()));
+
     let mut handles = vec![];
 
-    let render_worker = RenderWorker::new("Render", vec![]);
-
-    {
-        let mut render_worker = render_worker.lock().unwrap();
-        handles.push(render_worker.spawn());
-    }
+    let mut render_worker = RenderWorker::new("Render", Arc::clone(&state), vec![]);
+    handles.push(render_worker.spawn());
 
     let mut subscribers = vec![];
-
-    {
-        let render_worker = render_worker.lock().unwrap();
-        subscribers.push(render_worker.sender.clone());
-    }
+    subscribers.push(render_worker.sender.clone());
 
     // 5 subscribers
     for i in 1..5 {
@@ -68,7 +74,7 @@ fn main() -> SlackResult<()> {
             for received in receiver {
                 match received {
                     Message::Ping => println!("thread {}: ping", i),
-                    Message::Updated => println!("thread {}: updated ({:#?}), uptime", i, received),
+                    Message::Updated => println!("thread {}: updated ({:#?})", i, received),
                     Message::Exit => break
                 }
             }
@@ -78,11 +84,8 @@ fn main() -> SlackResult<()> {
     }
 
     // 1 slack worker
-    let slack_worker = SlackWorker::new("Slack", subscribers);
-    {
-        let mut slack_worker = slack_worker.lock().unwrap();
-        handles.push(slack_worker.spawn());
-    }
+    let mut slack_worker = SlackWorker::new("Slack", Arc::clone(&state), subscribers);
+    handles.push(slack_worker.spawn());
 
     for handle in handles {
         handle.join().unwrap();

@@ -34,4 +34,4 @@ mod slack_state;
 pub use slack_state::SlackState;
 
 mod worker;
-pub use worker::Worker;
+pub use worker::SlackWorker;

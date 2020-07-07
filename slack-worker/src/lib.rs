@@ -8,4 +8,4 @@ mod subscriber;
 pub use subscriber::Subscriber;
 
 mod worker;
-pub use worker::{Worker, WorkerImplementation, Sender, Receiver};
+pub use worker::{Spawn, Worker, WorkerImplementation, Sender, Receiver};
