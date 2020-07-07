@@ -1,5 +1,3 @@
-extern crate ui_abstract;
-
 mod from_action;
 mod horizontal_line;
 mod vertical_line;

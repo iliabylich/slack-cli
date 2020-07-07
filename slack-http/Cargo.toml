@@ -11,3 +11,4 @@ serde = { version = "1.0.114", features = ["derive"] }
 serde_json = "1.0.56"
 reqwest = { version = "0.10.6", features = ["blocking"] }
 http-resource = { path = "../http-resource" }
+slack-worker = { path = "../slack-worker" }

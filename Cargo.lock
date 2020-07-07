@@ -794,6 +794,7 @@ version = "0.1.0"
 dependencies = [
  "http-resource",
  "slack-http",
+ "slack-worker",
  "ui-abstract",
  "ui-in-memory",
  "ui-primitives",
@@ -808,7 +809,12 @@ dependencies = [
  "reqwest",
  "serde",
  "serde_json",
+ "slack-worker",
 ]
+
+[[package]]
+name = "slack-worker"
+version = "0.1.0"
 
 [[package]]
 name = "socket2"
