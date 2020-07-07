@@ -5,8 +5,9 @@ members = [
     "ui-terminal",
     "ui-in-memory",
     "http-resource",
-    "slack-data",
     "slack-worker",
+    "slack-data",
+    "slack-ui",
 ]
 
 [package]
@@ -24,5 +25,6 @@ ui-primitives = { path = "ui-primitives" }
 ui-terminal = { path = "ui-terminal" }
 ui-in-memory = { path = "ui-in-memory" }
 http-resource = { path = "http-resource" }
-slack-data = { path = "slack-data" }
 slack-worker = { path = "slack-worker" }
+slack-data = { path = "slack-data" }
+slack-ui = { path = "slack-ui" }

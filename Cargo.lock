@@ -794,6 +794,7 @@ version = "0.1.0"
 dependencies = [
  "http-resource",
  "slack-data",
+ "slack-ui",
  "slack-worker",
  "ui-abstract",
  "ui-in-memory",
@@ -810,6 +811,17 @@ dependencies = [
  "serde",
  "serde_json",
  "slack-worker",
+]
+
+[[package]]
+name = "slack-ui"
+version = "0.1.0"
+dependencies = [
+ "slack-data",
+ "slack-worker",
+ "ui-abstract",
+ "ui-primitives",
+ "ui-terminal",
 ]
 
 [[package]]
