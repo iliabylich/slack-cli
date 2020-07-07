@@ -1,4 +1,3 @@
-
 use ui_abstract::{VisualObject, AtomicAction, Printer, IoResult, Screen};
 use crate::{TerminalPrinter, TerminalScreenSize, ScreenSizeError};
 
@@ -8,6 +7,15 @@ pub struct TerminalScreen {
     pub size: TerminalScreenSize,
     objects: Vec<Visual>,
     printer: TerminalPrinter
+}
+
+impl std::fmt::Debug for TerminalScreen {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f
+            .debug_struct("TerminalScreen")
+            .field("size", &self.size)
+            .finish()
+    }
 }
 
 impl TerminalScreen {
