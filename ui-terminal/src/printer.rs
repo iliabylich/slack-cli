@@ -2,6 +2,7 @@ use std::io::{self, Write};
 
 use ui_abstract::{Printer, IoResult, AtomicAction};
 
+#[derive(Debug)]
 pub struct TerminalPrinter {}
 
 impl Printer for TerminalPrinter {

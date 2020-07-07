@@ -5,7 +5,6 @@ pub struct FromAtomicAction {
     action: AtomicAction
 }
 
-#[allow(dead_code)]
 impl FromAtomicAction {
     pub fn new(action: &AtomicAction) -> Self {
         Self { action: action.clone() }
