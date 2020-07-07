@@ -793,7 +793,7 @@ name = "slack-cli"
 version = "0.1.0"
 dependencies = [
  "http-resource",
- "slack-http",
+ "slack-data",
  "slack-worker",
  "ui-abstract",
  "ui-in-memory",
@@ -802,7 +802,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "slack-http"
+name = "slack-data"
 version = "0.1.0"
 dependencies = [
  "http-resource",

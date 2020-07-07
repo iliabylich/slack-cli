@@ -1,5 +1,5 @@
 [package]
-name = "slack-http"
+name = "slack-data"
 version = "0.1.0"
 authors = ["Ilya Bylich <ibylich@gmail.com>"]
 edition = "2018"

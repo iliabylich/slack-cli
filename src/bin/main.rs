@@ -1,7 +1,7 @@
 use ui_abstract::{Point, AtomicAction, Screen};
 use ui_primitives::{Rectangle, Label, FromAtomicAction};
 use ui_terminal::TerminalScreen;
-use slack_http::{SlackResult, SlackWorker, SlackState};
+use slack_data::{SlackResult, SlackWorker, SlackState};
 use slack_worker::{Message, Worker, Spawn, WorkerImplementation, Sender, Receiver};
 
 use std::sync::mpsc;
