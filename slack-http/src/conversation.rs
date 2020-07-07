@@ -86,7 +86,10 @@ mod tests {
 
 
         let slack = get_test_slack_client(request, response);
-        let result = slack.list_conversations().unwrap();
+        let result = match slack.list_conversations() {
+            Ok(value) => value,
+            Err(err) => panic!("got err: {:#?}", err)
+        };
 
         assert_eq!(
             result,
@@ -111,7 +114,10 @@ mod tests {
         "#;
 
         let slack = get_test_slack_client(request, response);
-        let result = slack.find_conversation("CHANNEL_ID").unwrap();
+        let result = match slack.find_conversation("CHANNEL_ID") {
+            Ok(value) => value,
+            Err(err) => panic!("got err: {:#?}", err)
+        };
 
         assert_eq!(
             result,
@@ -141,7 +147,10 @@ mod tests {
         "#;
 
         let slack = get_test_slack_client(request, response);
-        let result = slack.conversation_history("CHANNEL_ID").unwrap();
+        let result = match slack.conversation_history("CHANNEL_ID") {
+            Ok(value) => value,
+            Err(err) => panic!("got err: {:#?}", err)
+        };
 
         use crate::Message;
 

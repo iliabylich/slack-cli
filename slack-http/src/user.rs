@@ -62,7 +62,10 @@ mod tests {
 
 
         let slack = get_test_slack_client(request, response);
-        let result = slack.list_users().unwrap();
+        let result = match slack.list_users() {
+            Ok(value) => value,
+            Err(err) => panic!("got err: {:#?}", err)
+        };
 
         assert_eq!(
             result,

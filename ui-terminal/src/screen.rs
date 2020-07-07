@@ -1,6 +1,6 @@
 
 use ui_abstract::{VisualObject, AtomicAction, Printer, IoResult, Screen};
-use crate::{TerminalPrinter, TerminalScreenSize};
+use crate::{TerminalPrinter, TerminalScreenSize, ScreenSizeError};
 
 type Visual = Box<dyn VisualObject>;
 
@@ -11,17 +11,17 @@ pub struct TerminalScreen {
 }
 
 impl TerminalScreen {
-    pub fn new() -> Self {
-        let size = TerminalScreenSize::new().unwrap();
-        Self { size, objects: vec![], printer: TerminalPrinter {} }
+    pub fn new() -> Result<Self, ScreenSizeError> {
+        let size = TerminalScreenSize::new()?;
+        Ok(Self { size, objects: vec![], printer: TerminalPrinter {} })
     }
 
     pub fn push_object(&mut self, object: Visual) {
         self.objects.push(object)
     }
 
-    pub fn update_size(&mut self) {
-        self.size.update().unwrap();
+    pub fn update_size(&mut self) -> Result<(), ScreenSizeError> {
+        self.size.update()
     }
 }
 

@@ -74,7 +74,8 @@ fn find_field_with_name(fields: &Vec<syn::Field>, name: &str) -> Result<( syn::I
     for field in fields {
         if let Some(ident) = &field.ident {
             if ident.to_string() == name {
-                return Ok(( field.ident.clone().unwrap(), field.ty.clone() ))
+                let ident = ident.clone();
+                return Ok(( ident, field.ty.clone() ))
             }
         }
     }
@@ -85,7 +86,9 @@ fn find_field_with_attr(fields: &Vec<syn::Field>, attribute: &str) -> Result<( s
     for field in fields {
         for attr in &field.attrs {
             if attr.path.is_ident(attribute) {
-                return Ok(( field.ident.clone().unwrap(), field.ty.clone() ))
+                if let Some(ident) = &field.ident {
+                    return Ok(( ident.clone(), field.ty.clone() ))
+                }
             }
         }
     }
@@ -133,12 +136,24 @@ mod tests {
     use super::macro_impl;
     use proc_macro2::TokenStream as TokenStream2;
 
+    macro_rules! parse {
+        ($input_name: expr, $input: expr) => {
+            match $input.parse::<TokenStream2>() {
+                Ok(input) => input,
+                Err(err) => panic!("{} is invalid: {:#?}", $input_name, err)
+            }
+        }
+    }
+
     macro_rules! assert_derives {
         ($input: expr, $expected: expr) => {
-            let input = $input.parse::<TokenStream2>().unwrap();
-            let expected = $expected.parse::<TokenStream2>().unwrap();
+            let input = parse!("input", $input);
+            let expected = parse!("expected", $expected);
 
-            let output = macro_impl(input).unwrap();
+            let output = match macro_impl(input) {
+                Ok(output) => output,
+                Err(err) => panic!("macro returned err: {}", err)
+            };
 
             assert_eq!(
                 output.to_string(),
@@ -149,7 +164,7 @@ mod tests {
 
     macro_rules! assert_errors {
         ($input: expr, $err: expr) => {
-            let input = $input.parse::<TokenStream2>().unwrap();
+            let input = parse!("input", $input);
             let output = macro_impl(input);
 
             if let Err(err) = output {

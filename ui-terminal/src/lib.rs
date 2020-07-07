@@ -7,4 +7,4 @@ mod screen;
 pub use screen::TerminalScreen;
 
 mod screen_size;
-pub use screen_size::TerminalScreenSize;
+pub use screen_size::{TerminalScreenSize, ScreenSizeError};
