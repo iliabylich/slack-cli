@@ -4,9 +4,10 @@ use std::thread;
 use std::sync::{Arc, Mutex};
 use slack_data::{SlackState};
 use ui_terminal::TerminalScreen;
-use ui_primitives::{Rectangle, Label, FromAtomicAction};
+use ui_primitives::{FromAtomicAction};
 use ui_abstract::{Point, AtomicAction, Screen};
 use slack_worker::{Worker, WorkerImplementation, Sender, Receiver};
+use crate::ConversationsList;
 
 #[derive(Debug)]
 pub struct Render {
@@ -15,7 +16,6 @@ pub struct Render {
 }
 impl Render {
     pub fn redraw(&mut self) {
-        self.screen.push_object(Box::new(Label { at: Point { line: 8, col: 15 }, text: format!("hello") }));
         self.screen.redraw().unwrap_or_else(|err| panic!("Failed to draw, {}", err));
     }
 }
@@ -26,8 +26,13 @@ impl WorkerImplementation for Render {
         let mut screen = TerminalScreen::new().unwrap();
         println!("screen_size: {:#?}", &screen.size);
 
-        screen.push_object(Box::new(Rectangle { top_left: Point { line: 5, col: 5}, bottom_right: Point { line: 11, col: 30 } }));
-        screen.push_object(Box::new(Label { at: Point { line: 8, col: 15 }, text: format!("hello") }));
+        let conversations_list = ConversationsList::new(
+            screen.size.clone(),
+            state.clone()
+        );
+
+        screen.push_object(Box::new(conversations_list));
+
         screen.push_object(
             Box::new(
                 FromAtomicAction::new(
@@ -44,7 +49,7 @@ impl WorkerImplementation for Render {
     }
 
     fn tick(&mut self, _receiver: &Receiver, _subscribers: &Vec<Sender>) {
-        thread::sleep(Duration::from_millis(1000));
+        thread::sleep(Duration::from_millis(2_000));
         self.redraw();
     }
 }

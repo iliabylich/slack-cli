@@ -1,3 +1,4 @@
+use std::sync::{Arc, Mutex};
 use ui_abstract::{VisualObject, AtomicAction, Printer, IoResult, Screen};
 use crate::{TerminalPrinter, TerminalScreenSize, ScreenSizeError};
 
@@ -5,7 +6,7 @@ type Visual = Box<dyn VisualObject>;
 
 #[derive(Debug)]
 pub struct TerminalScreen {
-    pub size: TerminalScreenSize,
+    pub size: Arc<Mutex<TerminalScreenSize>>,
     objects: Vec<Visual>,
     printer: TerminalPrinter
 }
@@ -13,7 +14,7 @@ pub struct TerminalScreen {
 impl TerminalScreen {
     pub fn new() -> Result<Self, ScreenSizeError> {
         let size = TerminalScreenSize::new()?;
-        Ok(Self { size, objects: vec![], printer: TerminalPrinter {} })
+        Ok(Self { size: Arc::new(Mutex::new(size)), objects: vec![], printer: TerminalPrinter {} })
     }
 
     pub fn push_object(&mut self, object: Visual) {
@@ -21,7 +22,10 @@ impl TerminalScreen {
     }
 
     pub fn update_size(&mut self) -> Result<(), ScreenSizeError> {
-        self.size.update()
+        {
+            let mut size = self.size.lock().unwrap();
+            size.update()
+        }
     }
 }
 

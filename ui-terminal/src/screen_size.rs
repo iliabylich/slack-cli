@@ -1,4 +1,4 @@
-use std::process::Command;
+use terminal_size::{Width, Height, terminal_size};
 
 #[derive(Debug)]
 pub struct TerminalScreenSize {
@@ -29,35 +29,16 @@ impl From<std::num::ParseIntError> for ScreenSizeError {
     }
 }
 
-fn spawn_and_parse_output_as_integer(program: &str, arg: &str) -> Result<i32, ScreenSizeError> {
-    let mut output = Command::new(program)
-        .args(vec![arg])
-        .output()?
-        .stdout;
-
-    output.pop(); // drop '\n'
-
-    let output = std::str::from_utf8(&output)?;
-    let output = output.parse::<i32>()?;
-
-    Ok(output)
-}
-
-fn env_lines() -> Result<i32, ScreenSizeError> {
-    spawn_and_parse_output_as_integer("tput", "lines")
-}
-
-fn env_cols() -> Result<i32, ScreenSizeError> {
-    spawn_and_parse_output_as_integer("tput", "cols")
-}
-
 impl TerminalScreenSize {
     pub fn update(&mut self) -> Result<(), ScreenSizeError> {
-        let lines = env_lines()?;
-        let cols = env_cols()?;
-        self.lines = lines;
-        self.cols = cols;
-        Ok(())
+        let size = terminal_size();
+        if let Some((Width(w), Height(h))) = size {
+            self.lines = h as i32;
+            self.cols = w as i32;
+            Ok(())
+        } else {
+            Err(ScreenSizeError { message: String::from("Failed to get screen size") })
+        }
     }
 
     pub fn new() -> Result<Self, ScreenSizeError> {
